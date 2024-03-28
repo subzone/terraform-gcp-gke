@@ -50,5 +50,4 @@ jobs:
           git config --global user.name "Milenko Mitrovic"
           git config --global user.email "subzone@live.com"
           git tag 0.0.${{ env.BUILD_NUMBER }}
-
-        git push origin 0.0.${{ env.BUILD_NUMBER }}
+          git push origin 0.0.${{ env.BUILD_NUMBER }}
