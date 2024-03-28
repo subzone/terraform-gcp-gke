@@ -47,5 +47,7 @@ jobs:
 
       - name: Git Tag
         run: |
-          git tag $BUILD_NUMBER
-          git push origin $BUILD_NUMBER
+          git config --global user.name "Milenko Mitrovic"
+          git config --global user.email "subzone@live.com"
+          git tag 0.0.$BUILD_NUMBER
+          git push origin 0.0.$BUILD_NUMBER
