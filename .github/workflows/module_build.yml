@@ -1,16 +1,12 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
 
 jobs:
   SecurityScan:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,29 +22,7 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
 
-      - name: TFSec Scan
-        uses: tfsec/tfsec-pr-commenter-action@v0.0.3
-        # with:
-        #   tfsec_args: "--soft-fail"
-
-
-  GitTag:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-          token: ${{ secrets.MM_PAT }}
-
-      - name: Define BUILD_NUMBER
-        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
-
-      - name: Git Tag
-        run: |
-          git config --global user.name "Milenko Mitrovic"
-          git config --global user.email "subzone@live.com"
-          git remote set-url origin https://github.com/subzone/terraform-gcp-gke.git
-          git tag 0.0.${{ env.BUILD_NUMBER }}
-          git push --tags
+      - name: Terraform security scan
+        uses: triat/terraform-security-scan@v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
