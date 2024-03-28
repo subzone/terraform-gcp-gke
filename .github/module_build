@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+SecurityScan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: TFSec Scan
+        uses: tfsec/tfsec-pr-commenter-action@v0.0.3
+        with:
+          tfsec_args: "--soft-fail"
+
+
+GitTag:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: SecurityScan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: true
+
+      - name: Set Main Build Name
+        run: echo "BUILD_NUMBER=$(echo $GITHUB_RUN_NUMBER)" >> $GITHUB_ENV
+
+      - name: Git Tag
+        run: |
+          git tag $BUILD_NUMBER
+          git push origin $BUILD_NUMBER
