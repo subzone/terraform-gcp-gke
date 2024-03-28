@@ -34,7 +34,6 @@ jobs:
 
   GitTag:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: SecurityScan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
