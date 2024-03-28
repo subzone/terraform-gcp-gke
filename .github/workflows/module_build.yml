@@ -42,8 +42,8 @@ jobs:
           persist-credentials: false
           token: ${{ secrets.MM_PAT }}
 
-      - name: Set Main Build Name
-        run: echo "BUILD_NUMBER=$(echo $GITHUB_RUN_NUMBER)" >> $GITHUB_ENV
+      - name: Define BUILD_NUMBER
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Git Tag
         run: |
