@@ -51,4 +51,4 @@ jobs:
           git config --global user.email "subzone@live.com"
           git remote set-url origin https://github.com/subzone/terraform-gcp-gke.git
           git tag 0.0.${{ env.BUILD_NUMBER }}
-          git push origin 0.0.${{ env.BUILD_NUMBER }}
+          git push --tags
