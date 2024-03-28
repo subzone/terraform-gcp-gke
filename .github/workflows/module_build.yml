@@ -28,8 +28,8 @@ jobs:
 
       - name: TFSec Scan
         uses: tfsec/tfsec-pr-commenter-action@v0.0.3
-        with:
-          tfsec_args: "--soft-fail"
+        # with:
+        #   tfsec_args: "--soft-fail"
 
 
   GitTag:
