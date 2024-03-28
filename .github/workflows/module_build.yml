@@ -39,7 +39,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          persist-credentials: true
+          persist-credentials: false
+          token: ${{ secrets.MM_PAT }}
 
       - name: Set Main Build Name
         run: echo "BUILD_NUMBER=$(echo $GITHUB_RUN_NUMBER)" >> $GITHUB_ENV
